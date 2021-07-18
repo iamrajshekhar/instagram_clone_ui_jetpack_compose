@@ -3,21 +3,26 @@ package com.rajshekhar.instagramcloneui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,6 +34,28 @@ fun ProfileScreen() {
         TopBar(name = "Rajshekhar", modifier = Modifier.padding(10.dp))
         Spacer(modifier = Modifier.height(4.dp))
         ProfileSection()
+        Spacer(modifier = Modifier.height(25.dp))
+        ButtonSection(modifier = Modifier.fillMaxWidth())
+        Spacer(modifier = Modifier.height(25.dp))
+        StoryHighLightSection(
+            highlights = listOf(
+                StoryHighlight(
+                    painterResource(id = R.drawable.qa),
+                    text = "QNA"
+                ),
+                StoryHighlight(
+                    painterResource(id = R.drawable.youtube),
+                    text = "Youtube"
+                ),
+                StoryHighlight(
+                    painterResource(id = R.drawable.telegram),
+                    text = "Telegram"
+                ), StoryHighlight(
+                    painterResource(id = R.drawable.discord),
+                    text = "Discord"
+                )
+            )
+        )
     }
 }
 
@@ -212,4 +239,89 @@ fun ProfileDescription(
     }
 }
 
+
+@Composable
+fun ButtonSection(modifier: Modifier = Modifier) {
+    val minimumWidth = 95.dp
+    val minHeight = 35.dp
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = modifier
+    ) {
+        ActionButton(
+            title = "Following",
+            icon = Icons.Default.KeyboardArrowDown,
+            modifier = Modifier
+                .defaultMinSize(minWidth = minimumWidth)
+                .height(height = minHeight)
+        )
+        ActionButton(
+            title = "Message",
+            icon = Icons.Default.KeyboardArrowDown,
+            modifier = Modifier
+                .defaultMinSize(minWidth = minimumWidth)
+                .height(height = minHeight)
+        )
+        ActionButton(
+            title = "Email",
+            modifier = Modifier
+                .defaultMinSize(minWidth = minimumWidth)
+                .height(height = minHeight)
+        )
+        ActionButton(
+            icon = Icons.Default.KeyboardArrowDown,
+            modifier = Modifier
+                .height(height = minHeight)
+        )
+
+    }
+
+
+}
+
+@Composable
+fun ActionButton(modifier: Modifier = Modifier, title: String? = null, icon: ImageVector? = null) {
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier
+            .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(5.dp))
+            .padding(6.dp)
+    ) {
+        if (title != null) {
+            Text(text = title, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+
+        }
+        if (icon != null) {
+            Icon(imageVector = icon, contentDescription = null, tint = Color.Black)
+        }
+
+
+    }
+
+}
+
+@Composable
+fun StoryHighLightSection(modifier: Modifier = Modifier, highlights: List<StoryHighlight>) {
+    LazyRow(modifier = modifier) {
+        items(highlights.size) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(15.dp)
+            ) {
+
+                RoundImage(image = highlights[it].imagePainter, modifier = Modifier.size(70.dp))
+                Text(
+                    text = highlights[it].text,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
+
+            }
+        }
+    }
+}
 
